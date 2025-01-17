@@ -619,3 +619,15 @@ margin: 10px auto;
 margin-top:30px;
 }
 }
+
+#WishesList {
+    text-align: center; /* Centers text inside the container */
+    margin: 0 auto; /* Centers the container horizontally */
+    display: block; /* Ensures the div is treated as a block element */
+    max-width: 100%; /* Prevents overflow */
+    padding: 20px; /* Adds some padding around the content */
+}
+
+.wish-item {
+    margin-bottom: 15px; /* Adds spacing between each wish */
+}
