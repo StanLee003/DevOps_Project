@@ -40,7 +40,6 @@ function changeHeaderBackground() {
 }
 
 // Initialize the carousel
-<<<<<<< HEAD
 setInterval(changeHeaderBackground, carouselInterval);
 
 // URL backend Anda
@@ -116,6 +115,3 @@ async function loadWishes() {
 
 // Load wishes saat halaman dimuat
 document.addEventListener('DOMContentLoaded', loadWishes);
-=======
-setInterval(changeHeaderBackground, carouselInterval);
->>>>>>> 444cba48fc77859f3d3225b574b93cb7a8633974
