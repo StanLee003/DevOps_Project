@@ -41,3 +41,77 @@ function changeHeaderBackground() {
 
 // Initialize the carousel
 setInterval(changeHeaderBackground, carouselInterval);
+
+// URL backend Anda
+const API_URL = 'http://localhost:3000/api/wishes';
+
+// Submit Formulir Wish
+document.getElementById('wishForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const wish = document.getElementById('wish').value;
+
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, message: wish }),
+        });
+
+        if (response.ok) {
+            alert('Wish sent successfully!');
+            loadWishes(); // Refresh wishes list
+        } else {
+            alert('Failed to send wish. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Something went wrong. Please try again later.');
+    }
+});
+
+// Load Wishes from Backend
+async function loadWishes() {
+    try {
+        const response = await fetch(API_URL);
+        const wishes = await response.json();
+
+        const wishesList = document.getElementById('wishesList');
+        wishesList.innerHTML = '';
+
+        if (wishes.length === 0) {
+            wishesList.innerHTML = '<p>No wishes yet. Be the first to send your blessings!</p>';
+        } else {
+            let currentWishIndex = 0;
+
+            // Function to update the wish every 5 seconds
+            function updateWish() {
+                wishesList.innerHTML = ''; // Clear previous wish
+                const wish = wishes[currentWishIndex];
+
+                const wishElement = document.createElement('div');
+                wishElement.classList.add('wish-item');
+                wishElement.innerHTML = `
+                    <strong>${wish.name}</strong>
+                    <p>${wish.message}</p>
+                    <small>${new Date(wish.createdAt).toLocaleString()}</small>
+                `;
+                wishesList.appendChild(wishElement);
+
+                // Move to the next wish, and loop back to the first one if reached the end
+                currentWishIndex = (currentWishIndex + 1) % wishes.length;
+            }
+
+            // Update wish every 5 seconds
+            setInterval(updateWish, 5000);
+            updateWish(); // Initial wish display
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to load wishes. Please try again later.');
+    }
+}
+
+// Load wishes saat halaman dimuat
+document.addEventListener('DOMContentLoaded', loadWishes);
